@@ -2,12 +2,32 @@
   <div id="app">
     <div class="container" align="center">
       <ul style="list-style-type: none;">
-        <li v-for="preg in preguntas" :key="preg.id">
-          <div v-if="preg.tipo==='texto'">
-            {{preg.label}}
-            <HelloWorld datosP = preg.tipo></HelloWorld>
+
+        <li v-for="widget in widgets" :key="widget.id">
+          <div class="row mb-3" style="width: 80%; border-style: dotted;">
+            <div class="col my-auto" style="text-align: left">
+              {{widget.question}}
+            </div>
+            <div class="col" >
+
+              <div v-if="widget.type==='text'">
+                <TextWidget :id="widget.id" :valueSet="widget.valueSet" v-model="widget.answer"></TextWidget>
+                {{widget.answer}}
+              </div>
+              <div v-else-if="widget.type==='checkbox'">
+                <h5>Aqui va checkbox</h5>
+              </div>
+              <div v-else-if="widget.type==='radius'">
+                <h5>Aqu'i el radius></h5>
+              </div>
+              <div v-else>
+                <DropdownWidget :id="widget.id" :label="widget.label" :valueSet="widget.valueSet" :subCategory="widget.subCategory" v-model="widget.selected"></DropdownWidget>
+                {{widget.selected}}
+              </div>
+
+            </div>
           </div>
-          <div v-else>Hola amiwos</div>
+
         </li>
       </ul>
     </div>
@@ -15,27 +35,59 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TextWidget from './components/TextWidget.vue'
+import DropdownWidget from './components/DropdownWidget.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TextWidget,
+    DropdownWidget
   },
   mounted () {
-      return console.log(this.preguntas); 
+    return console.log(this.widgets);
   },
   data() {
     return{
-      preguntas : [{id : 1, label : 'Tu nombre', tipo : 'texto', valores : {max : 10, min:2, mandatory : true}, respuesta : ''},
-                   {id : 2, label: 'Color favorito', tipo : 'selection', valores : ['verde','rojo','rosa'], respuesta : ''}]
+      widgets : [
+          { id : 2,
+            question : 'Tu nombre',
+            type : 'text',
+            valueSet : [10, 2,  true, 'Ana Diana'], //max,min,required, placeholder
+            answer : ''
+          },
+          { id : 3,
+            question : 'Tu apellido',
+            type : 'text',
+            valueSet : [5, 0, false, 'Ana Diana'],
+            answer : ''
+          },
+          { id : 4,
+            question : 'Color preferido',
+            type : 'dropdown',
+            valueSet: [{idSet : 1, elem : 'green'}, {idSet: 2 , elem : 'red'}, {idSet: 3 , elem : 'blue'}],
+            selected : 2,
+            subCategory : []
+          },
+          { id : 5,
+            question : 'Pais preferido',
+            type : 'dropdown',
+            valueSet: [{idSet : 1, elem : 'USA'}, {idSet: 2 , elem : 'Mexico'}, {idSet: 3 , elem : 'Canada'}],
+            selected : 2,
+            subCategory: [
+                        {idParent : 1,
+                          idCat : 1,
+                          question : 'Edo favorito',
+                          valueSet : [{idSet : 1, name : 'California'}, {idSet: 2, name: 'Las Vegas'} ],
+                          selected : 1
+                        }
+                          ]
+          }
+      ]
     }
   },
-
   methods: {  
-    addQuestion(){
-      this.preguntas.push({id:this.preguntas.length,tipo:'texto',}) 
-    }
+
   }
 }
 </script>
