@@ -53,20 +53,20 @@ export default {
           { id : 2,
             question : 'Tu nombre',
             type : 'text',
-            valueSet : [10, 2,  true, 'Ana Diana'], //max,min,required, placeholder
+            valueSet : [16, 2,  true, 'Ana Diana'], //max,min,required, placeholder
             answer : ''
           },
           { id : 3,
             question : 'Tu apellido',
             type : 'text',
-            valueSet : [5, 0, false, 'Ana Diana'],
+            valueSet : [5, 0, false, 'Abc'],
             answer : ''
           },
           { id : 4,
             question : 'Color preferido',
             type : 'dropdown',
-            valueSet: [{idSet : 1, elem : 'green'}, {idSet: 2 , elem : 'red'}, {idSet: 3 , elem : 'blue'}],
-            selected : 2,
+            valueSet: [{idSet : 0 , elem : 'Selecciona uno'}, {idSet : 1, elem : 'green'}, {idSet: 2 , elem : 'red'}, {idSet: 3 , elem : 'blue'}, {idSet: 4 , elem : 'yellow'}],
+            selected : 0,
             subCategory : []
           },
           { id : 5,
