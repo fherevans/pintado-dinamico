@@ -15,7 +15,9 @@
                 {{widget.answer}}
               </div>
               <div v-else-if="widget.type==='checkbox'">
-                <h5>Aqui va checkbox</h5>
+                <div v-for="(widget, index) in widgets" :key="index">
+                  <Checkbox @checked="validacionCheckbox" :id="index" :disabled="widget.disabled" :required="widget.required" :max="widget.max" :values="widget.values" :valuesSelected="widget.valuesSelected" :labels="widget.labels"/>
+                </div>
               </div>
               <div v-else-if="widget.type==='radius'">
                 <h5>Aqu'i el radius></h5>
@@ -37,15 +39,15 @@
 <script>
 import TextWidget from './components/TextWidget.vue'
 import DropdownWidget from './components/DropdownWidget.vue'
-
+import Checkbox from '@/components/Checkbox';
 export default {
   name: 'App',
   components: {
     TextWidget,
-    DropdownWidget
+    DropdownWidget,
+    'Checkbox' : Checkbox
   },
   mounted () {
-    return console.log(this.widgets);
   },
   data() {
     return{
@@ -82,12 +84,52 @@ export default {
                           selected : 1
                         }
                           ]
-          }
+          },
+        {
+          values: ["primeraCosa","foo2","foo3","foo4"],
+          labels : ["primerFoo","foo2","foo3","foo4"],
+          valuesSelected: [true,false,false,false],
+          id:1,
+          min:0,
+          required:true,
+          max:3,
+          disabled: false
+        },
+        {
+          values: ["primeraCosa","foo2","foo3"],
+          labels : ["primerFoo","foo2","foo3"],
+          valuesSelected: [true,false,false],
+          id:1,
+          min:0,
+          required:true,
+          max:3,
+          disabled:false
+        }
       ]
     }
   },
-  methods: {  
 
+  methods: {
+    validacionCheckbox: function(value, checked, id) {
+      this.widgets[id].valuesSelected[value] = checked;
+      let atLeastOne = false;
+      let numberSelections = 0;
+      this.widgets[id].valuesSelected.forEach((value) => {
+        atLeastOne = atLeastOne || value;
+        if(value){
+            numberSelections += 1;
+        }
+      });
+      if(!atLeastOne && this.widgets[id].required){
+          alert("please select one");
+      }
+      if(numberSelections >= this.widgets[id].max){
+          alert("you can not select another one");
+          this.widgets[id].disabled = true;
+      } else{
+          this.widgets[id].disabled = false;
+      }
+    },
   }
 }
 </script>
