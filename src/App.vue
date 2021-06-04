@@ -3,7 +3,7 @@
     <div class="container" align="center">
       <ul style="list-style-type: none;">
 
-        <li v-for="widget in widgets" :key="widget.id">
+        <li v-for="(widget, index) in widgets" :key="index">
           <div class="row mb-3" style="width: 80%; border-style: dotted;">
             <div class="col my-auto" style="text-align: left">
               {{widget.question}}
@@ -15,9 +15,7 @@
                 {{widget.answer}}
               </div>
               <div v-else-if="widget.type==='checkbox'">
-                <div v-for="(widget, index) in widgets" :key="index">
                   <Checkbox @checked="validacionCheckbox" :id="index" :disabled="widget.disabled" :required="widget.required" :max="widget.max" :values="widget.values" :valuesSelected="widget.valuesSelected" :labels="widget.labels"/>
-                </div>
               </div>
               <div v-else-if="widget.type==='radius'">
                 <h5>Aqu'i el radius></h5>
@@ -85,9 +83,10 @@ export default {
                         }
                           ]
           },
-        {
-          values: ["primeraCosa","foo2","foo3","foo4"],
-          labels : ["primerFoo","foo2","foo3","foo4"],
+        { question : 'Tu foo favorito',
+          type : 'checkbox',
+          values: ["foo1","foo2","foo3","foo4"],
+          labels : ["foo1","foo2","foo3","foo4"],
           valuesSelected: [true,false,false,false],
           id:1,
           min:0,
@@ -96,8 +95,10 @@ export default {
           disabled: false
         },
         {
-          values: ["primeraCosa","foo2","foo3"],
-          labels : ["primerFoo","foo2","foo3"],
+          question : 'Ocupacion',
+          type : 'checkbox',
+          values: ["foo1","foo2","foo3"],
+          labels : ["amo de casa","abogado berrinchudo","programador de cobol"],
           valuesSelected: [true,false,false],
           id:1,
           min:0,
